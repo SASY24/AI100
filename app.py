@@ -3,10 +3,36 @@ import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split
 
-# ตัวอย่างข้อมูลและโมเดล
+# ตัวอย่างข้อมูลสำหรับการฝึก
+# ในที่นี้เราจะสร้างข้อมูลตัวอย่างขึ้นมา สามารถเปลี่ยนแปลงให้เข้ากับข้อมูลจริงได้
+data = pd.DataFrame({
+    'อายุ': np.random.randint(18, 60, 100),
+    'ประสบการณ์ทำงาน': np.random.randint(0, 40, 100),
+    'คะแนนการประเมิน': np.random.uniform(0, 5, 100),
+    'จำนวนชั่วโมงการอบรม': np.random.randint(0, 100, 100),
+    'เพศ_หญิง': np.random.randint(0, 2, 100),
+    'การศึกษา_ปริญญาโท': np.random.randint(0, 2, 100),
+    'การศึกษา_ปริญญาเอก': np.random.randint(0, 2, 100),
+    'ลาออก': np.random.randint(0, 2, 100)  # 0 = ไม่ลาออก, 1 = ลาออก
+})
+
+# แยกข้อมูลเป็น X และ y
+X = data.drop('ลาออก', axis=1)
+y = data['ลาออก']
+
+# แบ่งข้อมูลเป็นชุดฝึกและชุดทดสอบ
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# สร้าง scaler และโมเดล
 scaler = StandardScaler()
 rf_model = RandomForestClassifier(n_estimators=100, random_state=42)
+
+# ฝึก scaler และโมเดล
+scaler.fit(X_train)
+X_train_scaled = scaler.transform(X_train)
+rf_model.fit(X_train_scaled, y_train)
 
 # ฟังก์ชันทำนายความเสี่ยงการลาออก
 def predict_turnover_risk(employee_data):
