@@ -77,3 +77,8 @@ if st.button("ทำนายความเสี่ยง"):
     risk_prob, risk_level = predict_turnover_risk(new_employee)
     st.write(f"ความเสี่ยงในการลาออก: {risk_prob:.2%}")
     st.write(f"ระดับความเสี่ยง: {risk_level}")
+
+
+# สร้าง Classification Report
+report = classification_report(y_test, y_pred)
+print("Classification Report:\n", report)
