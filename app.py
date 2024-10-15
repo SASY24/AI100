@@ -4,9 +4,9 @@ import numpy as np
 from sklearn.preprocessing import StandardScaler
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import classification_report
 
 # ตัวอย่างข้อมูลสำหรับการฝึก
+# ในที่นี้เราจะสร้างข้อมูลตัวอย่างขึ้นมา สามารถเปลี่ยนแปลงให้เข้ากับข้อมูลจริงได้
 data = pd.DataFrame({
     'อายุ': np.random.randint(18, 60, 100),
     'ประสบการณ์ทำงาน': np.random.randint(0, 40, 100),
@@ -78,15 +78,7 @@ if st.button("ทำนายความเสี่ยง"):
     st.write(f"ความเสี่ยงในการลาออก: {risk_prob:.2%}")
     st.write(f"ระดับความเสี่ยง: {risk_level}")
 
-# สร้างรายงาน Classification Report เมื่อผู้ใช้กดปุ่ม "แสดง Classification Report"
-if st.button("แสดง Classification Report"):
-    # ทำการทำนายผลสำหรับชุดทดสอบ
-    X_test_scaled = scaler.transform(X_test)  # ทำการปรับมาตราส่วนข้อมูลทดสอบ
-    y_pred = rf_model.predict(X_test_scaled)   # ทำนายผลจากโมเดล
 
-    # สร้าง Classification Report
-    report = classification_report(y_test, y_pred, output_dict=True)
-    
-    # แสดงผลรายงาน
-    st.write("Classification Report:")
-    st.write(report)
+# สร้าง Classification Report
+report = classification_report(y_test, y_pred)
+print("Classification Report:\n", report)
